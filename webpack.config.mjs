@@ -1,16 +1,29 @@
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import { merge } from "webpack-merge";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+
+const analyzeConfig = {
+  plugins: [new BundleAnalyzerPlugin({})],
+};
+
+const nonAnalyzeConfig = {
+  output: {
+    module: true,
+    chunkFormat: "module",
+    chunkLoading: "import",
+  },
+};
 
 /**
  * @type {import("webpack").Configuration}
  */
-export default {
+const baseConfig = {
   entry: "./src/index.tsx",
   output: {
     clean: true,
-    module: true,
-    chunkFormat: "module",
-    chunkLoading: "import",
+    // module: true,
+    // chunkFormat: "module",
+    // chunkLoading: "import",
   },
   experiments: {
     outputModule: true,
@@ -23,12 +36,17 @@ export default {
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx", ".jsx"],
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
+        exclude: /node_modules/,
+        loader: "babel-loader",
       },
     ],
   },
@@ -36,8 +54,10 @@ export default {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: process.env.ANALYZE ? "server" : "disabled",
-    }),
   ],
 };
+
+export default merge(
+  baseConfig,
+  process.env.ANALYZE ? analyzeConfig : nonAnalyzeConfig,
+);
