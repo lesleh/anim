@@ -2,15 +2,24 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import { merge } from "webpack-merge";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
+/**
+ * @type {import("webpack").Configuration}
+ */
 const analyzeConfig = {
   plugins: [new BundleAnalyzerPlugin({})],
 };
 
+/**
+ * @type {import("webpack").Configuration}
+ */
 const nonAnalyzeConfig = {
   output: {
-    module: true,
-    chunkFormat: "module",
+    scriptType: "module",
     chunkLoading: "import",
+    chunkFormat: "module",
+  },
+  experiments: {
+    outputModule: true,
   },
 };
 
@@ -21,18 +30,15 @@ const baseConfig = {
   entry: "./src/index.tsx",
   output: {
     clean: true,
-    // module: true,
-    // chunkFormat: "module",
-    // chunkLoading: "import",
-  },
-  experiments: {
-    outputModule: true,
-    css: true,
   },
   optimization: {
+    runtimeChunk: "single",
     splitChunks: {
       chunks: "all",
     },
+  },
+  devServer: {
+    port: 3000,
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx", ".jsx"],
@@ -53,6 +59,7 @@ const baseConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
+      scriptLoading: "module",
     }),
   ],
 };

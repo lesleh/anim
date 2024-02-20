@@ -7,7 +7,9 @@ const loadFeatures = () => import("./features").then((res) => res.default);
 export function App() {
   return (
     <LazyMotion features={loadFeatures}>
-      <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} />
+      <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        Hello!
+      </m.div>
     </LazyMotion>
   );
 }
