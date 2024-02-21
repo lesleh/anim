@@ -15,8 +15,8 @@ const analyzeConfig = {
 const nonAnalyzeConfig = {
   output: {
     scriptType: "module",
-    chunkLoading: "import",
-    chunkFormat: "module",
+    // chunkLoading: "import",
+    // chunkFormat: "module",
   },
   experiments: {
     outputModule: true,
@@ -46,6 +46,9 @@ const baseConfig = {
       react: "preact/compat",
       "react-dom": "preact/compat",
     },
+  },
+  experiments: {
+    css: true,
   },
   module: {
     rules: [
